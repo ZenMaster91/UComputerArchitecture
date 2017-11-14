@@ -9,8 +9,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-#define TIMES			200
-#define SIZE			(1024*1024)
+#define TIMES		200
+#define SIZE		(1024*1024)
 #define MIN_VALUE	-1.0
 #define MAX_VALUE	1.0
 
@@ -18,8 +18,12 @@
 double *w_vector;
 double *u_vector;
 
-double* initVector(int minValue, int maxValue, int size) {
-	double *result = (double *) malloc(sizeof(double) * SIZE);
+double* initVector() {
+	return (double *) malloc(sizeof(double) * SIZE);
+}
+
+double* initVector(int minValue, int maxValue) {
+	double *result = initVector();
 
 	for(int i = 0; i < SIZE; i++) {
 		result[i] = (((double) rand() / (double) RAND_MAX) * (maxValue - minValue)) + minValue ;
@@ -29,7 +33,7 @@ double* initVector(int minValue, int maxValue, int size) {
 }
 
 double maxValueOf(double *vector) {
-	double maxValue = 0;
+	double maxValue = -1;
 	for(int i = 0; i < SIZE; i++) {
 		if(vector[i] > maxValue) {
 			maxValue = vector[i];
@@ -39,7 +43,7 @@ double maxValueOf(double *vector) {
 }
 
 double* dif2(double *vector) {
-	double *result = (double *) malloc(sizeof(double) * SIZE);
+	double *result = initVector();
 
 	for(int i = 0; i < SIZE; i++) {
 		if(i == 0) {
@@ -53,7 +57,7 @@ double* dif2(double *vector) {
 }
 
 double* div(double* vector1, double* vector2) {
-	double *result = (double *) malloc(sizeof(double) * SIZE);
+	double *result = initVector();
 
 	for(int i = 0; i < SIZE; i++) {
 		result[i] = (vector1[i]/vector2[i]);
@@ -63,8 +67,13 @@ double* div(double* vector1, double* vector2) {
 }
 
 int main() {
-	w_vector = initVector(MIN_VALUE, MAX_VALUE, SIZE);
-	u_vector = initVector(MIN_VALUE, MAX_VALUE, SIZE);
+	w_vector = initVector(MIN_VALUE, MAX_VALUE);
+	u_vector = initVector(MIN_VALUE, MAX_VALUE);
 
-	printf("hola \n");
+	for(int i = 0; i < SIZE; i ++) {
+		printf("%f", w_vector[i]);
+	}
+	//printf("Máximo valor del vector W: %E \n", maxValueOf(w_vector));
+	free(w_vector);
+	free(u_vector);
 }
