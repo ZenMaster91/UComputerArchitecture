@@ -8,6 +8,8 @@
 #include <iostream>
 #include "stdio.h"
 #include "stdlib.h"
+#include <math.h>
+#include <ctime>
 
 #define TIMES		200
 #define SIZE		(1024*1024)
@@ -17,6 +19,7 @@
 
 double *w_vector;
 double *u_vector;
+double *t_vector;
 
 double* initVector() {
 	return (double *) malloc(sizeof(double) * SIZE);
@@ -47,9 +50,9 @@ double* dif2(double *vector) {
 
 	for(int i = 0; i < SIZE; i++) {
 		if(i == 0) {
-			result[i] = (result[i])/2;
+			result[i] = (vector[i])/2;
 		} else {
-			result[i] = ((result[i] - result[i-1])/2);
+			result[i] = ((vector[i] - vector[i-1])/2);
 		}
 	}
 
@@ -66,14 +69,58 @@ double* div(double* vector1, double* vector2) {
 	return result;
 }
 
+double* mul(double factor, double* vector) {
+	double *result = initVector();
+
+	for(int i = 0; i < SIZE; i++) {
+		result[i] = (vector[i]*factor);
+	}
+	return vector;
+}
+
+double mean(double* vector) {
+	double result = 0.0;
+	for(int i = 0; i < TIMES; i++) {
+		result = result + vector[i];
+	}
+	return (result / TIMES);
+
+}
+
+double variance(double* vector, double mean) {
+	double var = 0;
+	for( int i = 0; i < TIMES; i++ ) {
+  	var += (vector[i] - mean) * (vector[i] - mean);
+	}
+	return var;
+}
+
 int main() {
 	w_vector = initVector(MIN_VALUE, MAX_VALUE);
 	u_vector = initVector(MIN_VALUE, MAX_VALUE);
+	t_vector = initVector(MIN_VALUE, MAX_VALUE);
+	double elapsed_secs;
+	int executedTimes = 0;
+	double* executionTimes = (double *) malloc(sizeof(double) * TIMES);
 
-	for(int i = 0; i < SIZE; i ++) {
-		printf("%f", w_vector[i]);
+	while(executedTimes < TIMES) {
+		clock_t begin = clock();
+
+		double *result = div(mul(maxValueOf(w_vector),dif2(u_vector)),t_vector);
+
+		clock_t end = clock();
+
+		elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+
+		//printf("%f \n", elapsed_secs);
+		executionTimes[executedTimes] = elapsed_secs;
+		executedTimes++;
 	}
-	//printf("Máximo valor del vector W: %E \n", maxValueOf(w_vector));
+
+	printf("Mean of time elapsed: %f \n", mean(executionTimes));
+	printf("Variance: %f \n", variance(executionTimes, mean(executionTimes)));
+	printf("Std. Deviation: %f \n", sqrt(variance(executionTimes, mean(executionTimes))));
+
 	free(w_vector);
 	free(u_vector);
 }
