@@ -115,6 +115,7 @@ int main() {
 		//printf("%f \n", elapsed_secs);
 		executionTimes[executedTimes] = elapsed_secs;
 		executedTimes++;
+		//printf("%f \n", ((double)((double)executedTimes/ (double)TIMES)*100));
 	}
 
 	printf("Mean of time elapsed: %f \n", mean(executionTimes));
