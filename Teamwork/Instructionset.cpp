@@ -1,8 +1,9 @@
-// InstructionSet.cpp
-// Compile by using: cl /EHsc /W4 InstructionSet.cpp
-// processor: x86, x64
-// Uses the __cpuid intrinsic to get information about
-// CPU extended instruction set support.
+/*
+ *  INSTRUCTIONSET.cpp
+ *
+ *  Created on: 14 nov. 2017
+ *      Author: willy
+ */
 
 #include <iostream>
 #include <vector>
@@ -21,63 +22,35 @@ public:
     static std::string Vendor(void) { return CPU_Rep.vendor_; }
     static std::string Brand(void) { return CPU_Rep.brand_; }
 
+    //SSE3
     static bool SSE3(void) { return CPU_Rep.f_1_ECX_[0]; }
-    static bool PCLMULQDQ(void) { return CPU_Rep.f_1_ECX_[1]; }
-    static bool MONITOR(void) { return CPU_Rep.f_1_ECX_[3]; }
-    static bool SSSE3(void) { return CPU_Rep.f_1_ECX_[9]; }
-    static bool FMA(void) { return CPU_Rep.f_1_ECX_[12]; }
-    static bool CMPXCHG16B(void) { return CPU_Rep.f_1_ECX_[13]; }
-    static bool SSE41(void) { return CPU_Rep.f_1_ECX_[19]; }
-    static bool SSE42(void) { return CPU_Rep.f_1_ECX_[20]; }
-    static bool MOVBE(void) { return CPU_Rep.f_1_ECX_[22]; }
-    static bool POPCNT(void) { return CPU_Rep.f_1_ECX_[23]; }
-    static bool AES(void) { return CPU_Rep.f_1_ECX_[25]; }
-    static bool XSAVE(void) { return CPU_Rep.f_1_ECX_[26]; }
-    static bool OSXSAVE(void) { return CPU_Rep.f_1_ECX_[27]; }
-    static bool AVX(void) { return CPU_Rep.f_1_ECX_[28]; }
-    static bool F16C(void) { return CPU_Rep.f_1_ECX_[29]; }
-    static bool RDRAND(void) { return CPU_Rep.f_1_ECX_[30]; }
 
-    static bool MSR(void) { return CPU_Rep.f_1_EDX_[5]; }
-    static bool CX8(void) { return CPU_Rep.f_1_EDX_[8]; }
-    static bool SEP(void) { return CPU_Rep.f_1_EDX_[11]; }
-    static bool CMOV(void) { return CPU_Rep.f_1_EDX_[15]; }
-    static bool CLFSH(void) { return CPU_Rep.f_1_EDX_[19]; }
+    //SSSE3
+    static bool SSSE3(void) { return CPU_Rep.f_1_ECX_[9]; }
+
+    //SSE4.1
+    static bool SSE41(void) { return CPU_Rep.f_1_ECX_[19]; }
+
+    //SSE4.2
+    static bool SSE42(void) { return CPU_Rep.f_1_ECX_[20]; }
+
+    //AVX
+    static bool AVX(void) { return CPU_Rep.f_1_ECX_[28]; }
+
+    //MMX
     static bool MMX(void) { return CPU_Rep.f_1_EDX_[23]; }
-    static bool FXSR(void) { return CPU_Rep.f_1_EDX_[24]; }
+
+    //SSE
     static bool SSE(void) { return CPU_Rep.f_1_EDX_[25]; }
+
+    //SSE2
     static bool SSE2(void) { return CPU_Rep.f_1_EDX_[26]; }
 
-    static bool FSGSBASE(void) { return CPU_Rep.f_7_EBX_[0]; }
-    static bool BMI1(void) { return CPU_Rep.f_7_EBX_[3]; }
-    static bool HLE(void) { return CPU_Rep.isIntel_ && CPU_Rep.f_7_EBX_[4]; }
+    //AVX2
     static bool AVX2(void) { return CPU_Rep.f_7_EBX_[5]; }
-    static bool BMI2(void) { return CPU_Rep.f_7_EBX_[8]; }
-    static bool ERMS(void) { return CPU_Rep.f_7_EBX_[9]; }
-    static bool INVPCID(void) { return CPU_Rep.f_7_EBX_[10]; }
-    static bool RTM(void) { return CPU_Rep.isIntel_ && CPU_Rep.f_7_EBX_[11]; }
+
+    //AVX512F
     static bool AVX512F(void) { return CPU_Rep.f_7_EBX_[16]; }
-    static bool RDSEED(void) { return CPU_Rep.f_7_EBX_[18]; }
-    static bool ADX(void) { return CPU_Rep.f_7_EBX_[19]; }
-    static bool AVX512PF(void) { return CPU_Rep.f_7_EBX_[26]; }
-    static bool AVX512ER(void) { return CPU_Rep.f_7_EBX_[27]; }
-    static bool AVX512CD(void) { return CPU_Rep.f_7_EBX_[28]; }
-    static bool SHA(void) { return CPU_Rep.f_7_EBX_[29]; }
-
-    static bool PREFETCHWT1(void) { return CPU_Rep.f_7_ECX_[0]; }
-
-    static bool LAHF(void) { return CPU_Rep.f_81_ECX_[0]; }
-    static bool LZCNT(void) { return CPU_Rep.isIntel_ && CPU_Rep.f_81_ECX_[5]; }
-    static bool ABM(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_ECX_[5]; }
-    static bool SSE4a(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_ECX_[6]; }
-    static bool XOP(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_ECX_[11]; }
-    static bool TBM(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_ECX_[21]; }
-
-    static bool SYSCALL(void) { return CPU_Rep.isIntel_ && CPU_Rep.f_81_EDX_[11]; }
-    static bool MMXEXT(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_EDX_[22]; }
-    static bool RDTSCP(void) { return CPU_Rep.isIntel_ && CPU_Rep.f_81_EDX_[27]; }
-    static bool _3DNOWEXT(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_EDX_[30]; }
-    static bool _3DNOW(void) { return CPU_Rep.isAMD_ && CPU_Rep.f_81_EDX_[31]; }
 
 private:
     static const InstructionSet_Internal CPU_Rep;
@@ -206,55 +179,14 @@ int main()
     std::cout << InstructionSet::Vendor() << std::endl;
     std::cout << InstructionSet::Brand() << std::endl;
 
-    support_message("3DNOW",       InstructionSet::_3DNOW());
-    support_message("3DNOWEXT",    InstructionSet::_3DNOWEXT());
-    support_message("ABM",         InstructionSet::ABM());
-    support_message("ADX",         InstructionSet::ADX());
-    support_message("AES",         InstructionSet::AES());
     support_message("AVX",         InstructionSet::AVX());
     support_message("AVX2",        InstructionSet::AVX2());
-    support_message("AVX512CD",    InstructionSet::AVX512CD());
-    support_message("AVX512ER",    InstructionSet::AVX512ER());
     support_message("AVX512F",     InstructionSet::AVX512F());
-    support_message("AVX512PF",    InstructionSet::AVX512PF());
-    support_message("BMI1",        InstructionSet::BMI1());
-    support_message("BMI2",        InstructionSet::BMI2());
-    support_message("CLFSH",       InstructionSet::CLFSH());
-    support_message("CMPXCHG16B",  InstructionSet::CMPXCHG16B());
-    support_message("CX8",         InstructionSet::CX8());
-    support_message("ERMS",        InstructionSet::ERMS());
-    support_message("F16C",        InstructionSet::F16C());
-    support_message("FMA",         InstructionSet::FMA());
-    support_message("FSGSBASE",    InstructionSet::FSGSBASE());
-    support_message("FXSR",        InstructionSet::FXSR());
-    support_message("HLE",         InstructionSet::HLE());
-    support_message("INVPCID",     InstructionSet::INVPCID());
-    support_message("LAHF",        InstructionSet::LAHF());
-    support_message("LZCNT",       InstructionSet::LZCNT());
     support_message("MMX",         InstructionSet::MMX());
-    support_message("MMXEXT",      InstructionSet::MMXEXT());
-    support_message("MONITOR",     InstructionSet::MONITOR());
-    support_message("MOVBE",       InstructionSet::MOVBE());
-    support_message("MSR",         InstructionSet::MSR());
-    support_message("OSXSAVE",     InstructionSet::OSXSAVE());
-    support_message("PCLMULQDQ",   InstructionSet::PCLMULQDQ());
-    support_message("POPCNT",      InstructionSet::POPCNT());
-    support_message("PREFETCHWT1", InstructionSet::PREFETCHWT1());
-    support_message("RDRAND",      InstructionSet::RDRAND());
-    support_message("RDSEED",      InstructionSet::RDSEED());
-    support_message("RDTSCP",      InstructionSet::RDTSCP());
-    support_message("RTM",         InstructionSet::RTM());
-    support_message("SEP",         InstructionSet::SEP());
-    support_message("SHA",         InstructionSet::SHA());
     support_message("SSE",         InstructionSet::SSE());
     support_message("SSE2",        InstructionSet::SSE2());
     support_message("SSE3",        InstructionSet::SSE3());
     support_message("SSE4.1",      InstructionSet::SSE41());
     support_message("SSE4.2",      InstructionSet::SSE42());
-    support_message("SSE4a",       InstructionSet::SSE4a());
     support_message("SSSE3",       InstructionSet::SSSE3());
-    support_message("SYSCALL",     InstructionSet::SYSCALL());
-    support_message("TBM",         InstructionSet::TBM());
-    support_message("XOP",         InstructionSet::XOP());
-    support_message("XSAVE",       InstructionSet::XSAVE());
 }

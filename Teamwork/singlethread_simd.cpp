@@ -36,48 +36,36 @@ double* initVector(int minValue, int maxValue) {
 	return result;
 }
 
-double maxValueOf(double *vector) {
-	double maxValue = -1;
-	for(int i = 0; i < SIZE; i++) {
-		if(vector[i] > maxValue) {
-			maxValue = vector[i];
-		}
-	}
-	return maxValue;
+double maxValueOf_SSE(double *vector) {
+    double res;
+    __m128d *m128vector = (__m128d*) vector;
+    __m128d maxval = _mm_setzero_ps();
+
+    for (int i = 0; i < SIZE / 4; i++) {
+        maxval = _mm_max_ps(maxval, m128vector[i]);
+    }
+
+    for (int i = 0; i < 3; i++) {
+        maxval = _mm_max_ps(maxval, _mm_shuffle_ps(maxval, maxval, 0x93));
+    }
+
+    _mm_store_ss(&res, maxval);
+
+    return res;
 }
 
-double* dif2(double *vector) {
-	double *result = initVector();
-
-	for(int i = 0; i < SIZE; i++) {
-		if(i == 0) {
-			result[i] = (vector[i])/2;
-		} else {
-			result[i] = ((vector[i] - vector[i-1])/2);
-		}
-	}
-
-	return result;
+double* dif2_SSE(double *vector) {
+	//To implement...
 }
 
-double* div(double* vector1, double* vector2) {
-	double *result = initVector();
-
-	for(int i = 0; i < SIZE; i++) {
-		result[i] = (vector1[i]/vector2[i]);
-	}
-
-	return result;
+double* div_SSE(double* vector1, double* vector2) {
+	//To implement...
 }
 
-double* mul(double factor, double* vector) {
-	double *result = initVector();
-
-	for(int i = 0; i < SIZE; i++) {
-		result[i] = (vector[i]*factor);
-	}
-	return vector;
+double* mul_SSE(double factor, double* vector) {
+	//To implement...
 }
+
 
 double mean(double* vector) {
 	double result = 0.0;
@@ -107,7 +95,7 @@ int main() {
 	while(executedTimes < TIMES) {
 		clock_t begin = clock();
 
-		double *result = div(mul(maxValueOf(w_vector),dif2(u_vector)),t_vector);
+		double *result = div_SSE(mul_SSE(maxValueOf_SSE(w_vector),dif2_SSE(u_vector)),t_vector);
 
 		clock_t end = clock();
 
