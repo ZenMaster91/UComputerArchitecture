@@ -42,11 +42,11 @@ double maxValueOf_SSE(double *vector) {
     __m128d maxval = _mm_setzero_ps();
 
     for (int i = 0; i < SIZE / 4; i++) {
-        maxval = _mm_max_ps(maxval, m128vector[i]);
+        maxval = _mm_max_epi32(maxval, m128vector[i]);
     }
 
     for (int i = 0; i < 3; i++) {
-        maxval = _mm_max_ps(maxval, _mm_shuffle_ps(maxval, maxval, 0x93));
+        maxval = _mm_max_epi32(maxval, _mm_shuffle_ps(maxval, maxval, 0x93));
     }
 
     _mm_store_ss(&res, maxval);

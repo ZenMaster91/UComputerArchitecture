@@ -8,7 +8,7 @@
 #include <iostream>
 #include "stdio.h"
 #include "stdlib.h"
-#include <intrin.h>
+//#include <intrin.h>
 #include <math.h>
 #include <ctime>
 
@@ -119,9 +119,9 @@ int main() {
 		//printf("%f \n", ((double)((double)executedTimes/ (double)TIMES)*100));
 	}
 
-	printf("Mean of time elapsed: %f \n", mean(executionTimes));
-	printf("Variance: %f \n", variance(executionTimes, mean(executionTimes)));
-	printf("Std. Deviation: %f \n", sqrt(variance(executionTimes, mean(executionTimes))));
+	printf("Mean of time elapsed: \t%f \n", mean(executionTimes));
+	printf("Variance: \t\t%f \n", variance(executionTimes, mean(executionTimes)));
+	printf("Std. Deviation: \t%f \n", sqrt(variance(executionTimes, mean(executionTimes))));
 
 	free(w_vector);
 	free(u_vector);
